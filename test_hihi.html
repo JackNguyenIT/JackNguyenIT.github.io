@@ -10,7 +10,7 @@
       const username = params.get('username');
       const hash = params.get('hash');
       
-      const deepLink = decenter://telegram-auth?id=${encodeURIComponent(id || '')}&username=${encodeURIComponent(username || '')}&hash=${encodeURIComponent(hash || '')};
+      const deepLink = `decenter://telegram-auth?id=${encodeURIComponent(id || '')}&username=${encodeURIComponent(username || '')}&hash=${encodeURIComponent(hash || '')}`;
       window.location.href = deepLink;
     };
   </script>
