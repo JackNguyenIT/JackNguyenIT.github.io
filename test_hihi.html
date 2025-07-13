@@ -1,39 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Telegram Auth Redirect</title>
-  <script>
-    window.onload = function() {
-      const params = {};
-      const queryString = window.location.search.substring(1);
-      const pairs = queryString.split("&");
-      for (const pair of pairs) {
-        const [key, value] = pair.split("=");
-        params[decodeURIComponent(key)] = decodeURIComponent(value || "");
-      }
-       console.log('Test:', params);
-      
-     
-      
-      // Lấy từng tham số
-      const params2 = new URLSearchParams(queryString);
-      console.log('Tất cả tham số:', Object.fromEntries(params2));
-      
-      const id = params.get('id');
-      const username = params.get('username');
-      const hash = params.get('hash');
-      
-      console.log('Tham số cụ thể - ID:', id, 'Username:', username, 'Hash:', hash);
-      
-      // Tạo Deep Link với các tham số
-      const deepLink = `decenter://telegram-auth?id=${encodeURIComponent(id || 'no-id')}&username=${encodeURIComponent(username || 'no-username')}&hash=${encodeURIComponent(hash || 'no-hash')}`;
-      console.log('Chuyển hướng đến:', deepLink);
-      window.location.href = deepLink;
-    };
-  </script>
+  <title>Telegram Auto Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+    #status { margin-top: 16px; font-size: 14px; color: #555; }
+  </style>
 </head>
 <body>
-  <p>Redirecting...</p>
+  <h2>🚀 Logging in with Telegram...</h2>
+  <div id="status">Waiting for Telegram...</div>
+
+  <script>
+    function onTelegramAuth(user) {
+      document.getElementById("status").innerText = "✅ Logged in as @" + user.username;
+
+      // Optional: verify with your backend
+      // Then redirect to Flutter app if needed
+      const params = new URLSearchParams({
+        id: user.id,
+        username: user.username || '',
+        first_name: user.first_name || '',
+        hash: user.hash
+      }).toString();
+
+      const deepLink = `decenter://telegram-auth?${params}`;
+      window.location.href = deepLink;
+
+      setTimeout(() => {
+        document.getElementById("status").innerText = "⚠️ Could not open app.";
+      }, 3000);
+    }
+
+    // Inject script tag dynamically (acts like auto-login)
+    const script = document.createElement("script");
+    script.src = "https://telegram.org/js/telegram-widget.js?7";
+    script.setAttribute("data-telegram-login", "your_bot_username"); // <-- Thay bằng bot thật
+    script.setAttribute("data-size", "large");
+    script.setAttribute("data-userpic", "false");
+    script.setAttribute("data-lang", "en");
+    script.setAttribute("data-request-access", "write");
+    script.setAttribute("data-on-auth", "onTelegramAuth");
+    script.async = true;
+    document.body.appendChild(script);
+  </script>
 </body>
 </html>
