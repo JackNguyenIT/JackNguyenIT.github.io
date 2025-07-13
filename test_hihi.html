@@ -5,12 +5,23 @@
   <title>Telegram Auth Redirect</title>
   <script>
     window.onload = function() {
-      const params = new URLSearchParams(window.location.search);
+      // Lấy toàn bộ query string từ URL
+      const queryString = window.location.search;
+      console.log('Query String đầy đủ:', queryString);
+      
+      // Lấy từng tham số
+      const params = new URLSearchParams(queryString);
+      console.log('Tất cả tham số:', Object.fromEntries(params));
+      
       const id = params.get('id');
       const username = params.get('username');
       const hash = params.get('hash');
       
-      const deepLink = `decenter://telegram-auth?id=${encodeURIComponent(id || '')}&username=${encodeURIComponent(username || '')}&hash=${encodeURIComponent(hash || '')}`;
+      console.log('Tham số cụ thể - ID:', id, 'Username:', username, 'Hash:', hash);
+      
+      // Tạo Deep Link với các tham số
+      const deepLink = `decenter://telegram-auth?id=${encodeURIComponent(id || 'no-id')}&username=${encodeURIComponent(username || 'no-username')}&hash=${encodeURIComponent(hash || 'no-hash')}`;
+      console.log('Chuyển hướng đến:', deepLink);
       window.location.href = deepLink;
     };
   </script>
