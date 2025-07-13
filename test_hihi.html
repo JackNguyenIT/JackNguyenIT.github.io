@@ -2,47 +2,68 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Telegram Auto Login Debug</title>
+  <title>Telegram Login Demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      font-family: monospace;
+      font-family: sans-serif;
       padding: 20px;
-      background: #f9f9f9;
-      color: #333;
+      background: #f7f7f7;
+    }
+    h2 {
+      margin-bottom: 12px;
     }
     #log {
       margin-top: 20px;
       background: #fff;
       border: 1px solid #ccc;
       padding: 12px;
-      max-height: 70vh;
+      max-height: 300px;
       overflow-y: auto;
       white-space: pre-wrap;
     }
   </style>
 </head>
 <body>
-  <h2>🔍 Telegram Login Debug</h2>
-  <div id="log">Initializing...</div>
+
+  <h2>🔐 Login with Telegram</h2>
+
+  <!-- Telegram Widget -->
+  <script async src="https://telegram.org/js/telegram-widget.js?22"
+    data-telegram-login="Loginbyflutter"        <!-- 👈 THAY tên bot thật nếu khác -->
+    data-size="large"
+    data-userpic="false"
+    data-request-access="write"
+    data-onauth="onTelegramAuth(user)">
+  </script>
+
+  <div id="log">Waiting for login...</div>
 
   <script>
     const logDiv = document.getElementById("log");
 
-    function log(msg, data) {
-      const time = new Date().toISOString().split("T")[1].split(".")[0];
-      logDiv.innerText += `[${time}] ${msg}\n`;
-      if (data) {
-        logDiv.innerText += JSON.stringify(data, null, 2) + "\n";
-      }
+    function log(title, obj = null) {
+      const time = new Date().toLocaleTimeString();
+      logDiv.innerText += `[${time}] ${title}\n`;
+      if (obj) logDiv.innerText += JSON.stringify(obj, null, 2) + "\n\n";
     }
 
-    function onTelegramAuth(user) {
-      log("✅ Telegram login successful. User data:", user);
+    async function onTelegramAuth(user) {
+      log("✅ Logged in as:", user);
 
-      // Optional: send to backend for hash verification
-      // log("🔐 Sending user to backend for verification...");
+      // 🔒 Optional: Send to backend for hash verification
+      // const response = await fetch("https://your-api.com/verify-telegram", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(user)
+      // });
+      // const result = await response.json();
+      // if (!result.valid) {
+      //   log("❌ Invalid login");
+      //   return;
+      // }
 
+      // ✅ Construct deep link for app
       const params = new URLSearchParams({
         id: user.id,
         username: user.username || '',
@@ -50,33 +71,19 @@
         last_name: user.last_name || '',
         auth_date: user.auth_date,
         hash: user.hash
-      }).toString();
+      });
 
       const deepLink = `decenter://telegram-auth?${params}`;
-      log("🚀 Redirecting to app via:", deepLink);
+      log("🚀 Redirecting to app:", deepLink);
+
       window.location.href = deepLink;
 
+      // Fallback in case app not opened
       setTimeout(() => {
-        log("⚠️ Fallback: App may not have opened.");
+        log("⚠️ App not opened. Please install or try again.");
       }, 3000);
     }
-
-    try {
-      log("🚧 Injecting Telegram login widget...");
-      const script = document.createElement("script");
-      script.src = "https://telegram.org/js/telegram-widget.js?7";
-      script.setAttribute("data-telegram-login", "Loginbyflutter"); // ← Thay bằng bot thật
-      script.setAttribute("data-size", "large");
-      script.setAttribute("data-userpic", "false");
-      script.setAttribute("data-lang", "en");
-      script.setAttribute("data-request-access", "write");
-      script.setAttribute("data-on-auth", "onTelegramAuth");
-      script.async = true;
-      document.body.appendChild(script);
-      log("✅ Widget injected.");
-    } catch (err) {
-      log("❌ Error injecting widget:", err);
-    }
   </script>
+
 </body>
 </html>
