@@ -14,12 +14,11 @@
       }
        console.log('Test:', params);
       
-      const queryString = window.location.search;
-      console.log('Query String đầy đủ:', queryString);
+     
       
       // Lấy từng tham số
-      const params = new URLSearchParams(queryString);
-      console.log('Tất cả tham số:', Object.fromEntries(params));
+      const params2 = new URLSearchParams(queryString);
+      console.log('Tất cả tham số:', Object.fromEntries(params2));
       
       const id = params.get('id');
       const username = params.get('username');
