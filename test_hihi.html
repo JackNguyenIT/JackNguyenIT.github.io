@@ -1,34 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Telegram Login</title>
+  <meta charset="UTF-8">
+  <title>Telegram Login Redirect</title>
 </head>
 <body>
-  <h2>Đăng nhập bằng Telegram</h2>
+  <h2>Đang xử lý đăng nhập Telegram...</h2>
+  <div id="result"></div>
 
-  <!-- Nút login Telegram -->
-<!--   <script async src="https://telegram.org/js/telegram-widget.js?22"
-    data-telegram-login="Loginbyflutter_bot"   <!-- không có @ -->
-    data-size="large"
-    data-userpic="true"
-    data-request-access="write"
-    data-onauth="onTelegramAuth">
-  </script> -->
-<script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-login="Loginbyflutter_bot" data-size="large" data-userpic="false" data-auth-url="https://jacknguyenit.github.io/test_hihi" data-request-access="write"></script>
-  <!-- Xử lý kết quả trả về từ Telegram -->
-<!--   <script type="text/javascript">
-    function onTelegramAuth(user) {
-      // user chứa: id, first_name, last_name, username, photo_url, auth_date, hash
+  <script>
+    // Lấy phần hash từ URL (ví dụ: #tgAuthResult=xxxx)
+    const hash = window.location.hash;
+    // Xóa ký tự "#" ở đầu, tạo URLSearchParams
+    const params = new URLSearchParams(hash.slice(1));
+    // Lấy giá trị param 'tgAuthResult'
+    const codeTelegram = params.get('tgAuthResult');
 
-      // Gửi dữ liệu về Flutter WebView bằng postMessage (ví dụ)
-      const json = JSON.stringify(user);
+    // Xuất ra HTML hoặc xử lý tiếp
+    document.getElementById('result').innerText =
+      codeTelegram
+        ? `Đã lấy mã Telegram: ${codeTelegram}`
+        : 'Không tìm thấy mã Telegram từ Telegram redirect.';
 
-      // Nếu dùng Flutter WebView (InAppWebView)
-      window.flutter_inappwebview.callHandler('onTelegramLogin', json);
-
-      // Hoặc log ra console để kiểm tra
-      console.log("User authenticated:", user);
-    }
-  </script> -->
+    // Có thể gửi mã này về server qua AJAX/fetch nếu cần xác thực tiếp
+    // fetch('/api/telegram-auth', {method: 'POST', body: JSON.stringify({code: codeTelegram})})
+    // ...
+  </script>
 </body>
 </html>
