@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Deeplink mở app</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding-top: 80px; }
+    button { font-size: 20px; padding: 16px 36px; margin: 20px; cursor: pointer; }
+    .note { font-size: 14px; color: #555; margin-top: 32px; }
+  </style>
+</head>
+<body>
+  <h2>Test mở ứng dụng qua Deeplink</h2>
+  <button id="openAppBtn">Mở ứng dụng Decenter</button>
+  <div class="note">
+    Nếu không thấy ứng dụng mở lên, hãy kiểm tra xem app đã cài và deeplink đã được config chưa.<br>
+    Safari/iOS chỉ cho phép chuyển qua thao tác người dùng (click/tap).
+  </div>
+
+  <script>
+    document.getElementById('openAppBtn').onclick = function() {
+      // Thay đổi tham số bên dưới cho phù hợp
+      const id = '12345';
+      const username = 'testuser';
+      const hash = 'samplehash123';
+      const deepLink = `decenter://telegram-auth?id=${encodeURIComponent(id)}&username=${encodeURIComponent(username)}&hash=${encodeURIComponent(hash)}`;
+
+      // Chuyển hướng tới deeplink (thông qua click, Safari/iOS sẽ cho phép)
+      window.location.href = deepLink;
+    }
+  </script>
+</body>
+</html>
