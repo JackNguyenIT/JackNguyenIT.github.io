@@ -9,22 +9,18 @@
   <div id="result"></div>
 
   <script>
-    // Lấy phần hash từ URL (ví dụ: #tgAuthResult=xxxx)
+   <script>
+    
     const hash = window.location.hash;
-    // Xóa ký tự "#" ở đầu, tạo URLSearchParams
     const params = new URLSearchParams(hash.slice(1));
-    // Lấy giá trị param 'tgAuthResult'
     const codeTelegram = params.get('tgAuthResult');
-
-    // Xuất ra HTML hoặc xử lý tiếp
-    document.getElementById('result').innerText =
-      codeTelegram
-        ? `Đã lấy mã Telegram: ${codeTelegram}`
-        : 'Không tìm thấy mã Telegram từ Telegram redirect.';
-
-    // Có thể gửi mã này về server qua AJAX/fetch nếu cần xác thực tiếp
-    // fetch('/api/telegram-auth', {method: 'POST', body: JSON.stringify({code: codeTelegram})})
-    // ...
+    if (codeTelegram) {
+      const deepLink = `decenter://telegram-auth?codeTelegram=${encodeURIComponent(codeTelegram)}`;
+      window.location.href = deepLink;
+    } else {
+      document.body.innerHTML = '<h3>Không tìm thấy codeTelegram</h3>';
+    }
+  </script>
   </script>
 </body>
 </html>
