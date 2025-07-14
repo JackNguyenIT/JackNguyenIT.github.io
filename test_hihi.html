@@ -36,8 +36,7 @@
         <p>Đã xác thực, nhấn nút bên dưới để trở về ứng dụng:</p>
         <button id="backToAppBtn">Back to App</button>
       `;
-    
-      window.location.href = deepLink;
+      const deepLink = `decenter://telegram-auth?codeTelegram=${encodeURIComponent(codeTelegram)}`;
       document.getElementById('backToAppBtn').onclick = function() {
         window.location.href = deepLink;
       }
