@@ -16,9 +16,17 @@
       const codeTelegram = params.get('tgAuthResult');
       console.log("codeTelegram:", codeTelegram);
       if (codeTelegram) {
-        const deepLink = `decenter://telegram-auth?codeTelegram=${encodeURIComponent(codeTelegram)}`;
-        console.log("Redirecting to deepLink:", deepLink);
-        window.location.href = deepLink;
+              const id = '12345';
+      const username = 'testuser';
+      const hash = 'samplehash123';
+      
+      // Tạo Deep Link với các tham số
+      const deepLink = `decenter://telegram-auth?id=${encodeURIComponent(id)}&username=${encodeURIComponent(username)}&hash=${encodeURIComponent(hash)}`;
+      console.log('Redirecting to: ' + deepLink);
+      window.location.href = deepLink;
+        // const deepLink = `decenter://telegram-auth?codeTelegram=${encodeURIComponent(codeTelegram)}`;
+        // console.log("Redirecting to deepLink:", deepLink);
+        // window.location.href = deepLink;
       } else {
         console.log("Không tìm thấy codeTelegram");
         document.body.innerHTML = '<h3>Không tìm thấy codeTelegram</h3>';
