@@ -12,8 +12,10 @@
     const params = new URLSearchParams(hash.slice(1));
     const codeTelegram = params.get('tgAuthResult');
     if (codeTelegram) {
-      const deepLink = `decenter://telegram-auth?codeTelegram=${encodeURIComponent(codeTelegram)}`;
+      const deepLink = `decenter://telegram-auth?codeTelegram=abcd`;
       window.location.href = deepLink;
+      // const deepLink = `decenter://telegram-auth?codeTelegram=${encodeURIComponent(codeTelegram)}`;
+      // window.location.href = deepLink;
     } else {
       document.body.innerHTML = '<h3>Không tìm thấy codeTelegram</h3>';
     }
