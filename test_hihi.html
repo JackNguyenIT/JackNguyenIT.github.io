@@ -37,11 +37,12 @@
         <button id="backToAppBtn">Back to App</button>
       `;
       const deepLink = `decenter://telegram-auth?codeTelegram=${encodeURIComponent(codeTelegram)}`;
+      window.location.href = deepLink;
       document.getElementById('backToAppBtn').onclick = function() {
         window.location.href = deepLink;
       }
     } else {
-      main.innerHTML = '<h3>Không tìm thấy <code>codeTelegram</code></h3>';
+      main.innerHTML = '<h3>Không thể xác thực</h3>';
     }
   </script>
 </body>
