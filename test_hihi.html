@@ -8,18 +8,22 @@
   <h2>Redirecting...</h2>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    window.onload = function() {
+      console.log("window.onload fired");
       const hash = window.location.hash;
+      console.log("window.location.hash:", hash);
       const params = new URLSearchParams(hash.slice(1));
       const codeTelegram = params.get('tgAuthResult');
-
+      console.log("codeTelegram:", codeTelegram);
       if (codeTelegram) {
         const deepLink = `decenter://telegram-auth?codeTelegram=${encodeURIComponent(codeTelegram)}`;
+        console.log("Redirecting to deepLink:", deepLink);
         window.location.href = deepLink;
       } else {
+        console.log("Không tìm thấy codeTelegram");
         document.body.innerHTML = '<h3>Không tìm thấy codeTelegram</h3>';
       }
-    });
+    };
   </script>
 </body>
 </html>
