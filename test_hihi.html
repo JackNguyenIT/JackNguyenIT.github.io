@@ -3,43 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <title>Telegram Auth Redirect</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin-top: 80px; }
+    button {
+      font-size: 20px;
+      padding: 14px 36px;
+      border-radius: 6px;
+      background: #3390ec;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      margin-top: 24px;
+      box-shadow: 0 2px 8px #c2d9ee33;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #176fc2;
+    }
+  </style>
 </head>
 <body>
   <h2>Redirecting...</h2>
-
+  <div id="main"></div>
   <script>
-    window.onload = function() {
-      console.log("window.onload fired");
-      const hash = window.location.hash;
-      console.log("window.location.hash:", hash);
-      const params = new URLSearchParams(hash.slice(1));
-      const codeTelegram = params.get('tgAuthResult');
-      console.log("codeTelegram:", codeTelegram);
-                const id = '12345';
-      const username = 'testuser';
-      const hash = 'samplehash123';
-      
-      // Tạo Deep Link với các tham số
-      const deepLink = `decenter://telegram-auth?id=${encodeURIComponent(id)}&username=${encodeURIComponent(username)}&hash=${encodeURIComponent(hash)}`;
-      console.log('Redirecting to: ' + deepLink);
-      window.location.href = deepLink;
-      // if (codeTelegram) {
-      //         const id = '12345';
-      // const username = 'testuser';
-      // const hash = 'samplehash123';
-      
-      // // Tạo Deep Link với các tham số
-      // const deepLink = `decenter://telegram-auth?id=${encodeURIComponent(id)}&username=${encodeURIComponent(username)}&hash=${encodeURIComponent(hash)}`;
-      // console.log('Redirecting to: ' + deepLink);
-      // window.location.href = deepLink;
-      //   // const deepLink = `decenter://telegram-auth?codeTelegram=${encodeURIComponent(codeTelegram)}`;
-      //   // console.log("Redirecting to deepLink:", deepLink);
-      //   // window.location.href = deepLink;
-      // } else {
-      //   console.log("Không tìm thấy codeTelegram");
-      //   document.body.innerHTML = '<h3>Không tìm thấy codeTelegram</h3>';
-      // }
-    };
+    const hash = window.location.hash;
+    const params = new URLSearchParams(hash.slice(1));
+    const codeTelegram = params.get('tgAuthResult');
+    const main = document.getElementById('main');
+
+    if (codeTelegram) {
+      main.innerHTML = `
+        <p>Đã xác thực, nhấn nút bên dưới để trở về ứng dụng:</p>
+        <button id="backToAppBtn">Back to App</button>
+      `;
+      const deepLink = `decenter://telegram-auth?codeTelegram=${encodeURIComponent(codeTelegram)}`;
+      document.getElementById('backToAppBtn').onclick = function() {
+        window.location.href = deepLink;
+      }
+    } else {
+      main.innerHTML = '<h3>Không tìm thấy <code>codeTelegram</code></h3>';
+    }
   </script>
 </body>
 </html>
