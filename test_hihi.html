@@ -20,15 +20,39 @@
     button:hover {
       background: #176fc2;
     }
+    pre {
+      background: #f5f7fa;
+      border-radius: 6px;
+      padding: 12px;
+      margin-top: 30px;
+      color: #333;
+      font-size: 15px;
+      text-align: left;
+      width: 360px;
+      margin-left: auto;
+      margin-right: auto;
+      word-break: break-all;
+    }
   </style>
 </head>
 <body>
   <h2>Redirecting...</h2>
   <div id="main"></div>
+  <pre id="log"></pre>
   <script>
+    function log(msg) {
+      const logBox = document.getElementById('log');
+      logBox.textContent += `[${new Date().toLocaleTimeString()}] ${msg}\n`;
+    }
+
+    log('Page loaded. Parsing hash...');
     const hash = window.location.hash;
+    log(`Location hash: ${hash}`);
+
     const params = new URLSearchParams(hash.slice(1));
     const codeTelegram = params.get('tgAuthResult');
+    log(`Extracted codeTelegram: ${codeTelegram}`);
+
     const main = document.getElementById('main');
 
     if (codeTelegram) {
@@ -37,11 +61,15 @@
         <button id="backToAppBtn">Back to App</button>
       `;
       const deepLink = `decenter://telegram-auth?codeTelegram=${encodeURIComponent(codeTelegram)}`;
+      log(`Prepared deeplink: ${deepLink}`);
+
       document.getElementById('backToAppBtn').onclick = function() {
+        log('Back to App button clicked. Redirecting to deeplink...');
         window.location.href = deepLink;
       }
     } else {
       main.innerHTML = '<h3>Không thể xác thực</h3>';
+      log('Missing tgAuthResult, cannot construct deeplink.');
     }
   </script>
 </body>
